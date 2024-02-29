@@ -1,15 +1,15 @@
-import { View } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
+import { SafeAreaView } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import CurrenciesList from './src/CurrenciesList';
 
 const queryClient = new QueryClient()
 
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <View>
-        <StatusBar style="auto" />
-      </View>
+      <SafeAreaView className="flex-1">
+        <CurrenciesList />
+      </SafeAreaView>
     </QueryClientProvider>
   );
 }
