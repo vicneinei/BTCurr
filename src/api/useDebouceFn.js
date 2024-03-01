@@ -1,7 +1,13 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 export const useDebounceFn = (fn, delay = 1000) => {
   const debounceTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      debounceTimeoutRef.current && clearTimeout(debounceTimeoutRef.current);
+    }
+  })
 
   return (...args) => {
     debounceTimeoutRef.current && clearTimeout(debounceTimeoutRef.current);

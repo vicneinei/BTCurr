@@ -6,6 +6,7 @@ import useCurrenciesQuery from "./api/useCurrenciesQuery";
 import CurrencyItem from "./CurrencyItem";
 import KeyboardAvoidingLayout from "./KeyboardAvoidingLayout";
 import ListFooter from "./ListFooter";
+import { InvalidatePreferredCtxProvider } from "./InvalidatePreferredCtx";
 
 const CurrenciesList = () => {
   const { data, isFetching, refetch } = useCurrenciesQuery();
@@ -35,18 +36,20 @@ const CurrenciesList = () => {
   return (
     <>
       <KeyboardAvoidingLayout>
-        <FlatList
-          onScroll={onScroll}
-          ref={listRef}
-          data={data}
-          refreshing={isFetching}
-          onRefresh={onRefresh}
-          keyExtractor={(item) => item.code}
-          renderItem={({ item }) => <CurrencyItem {...item} />}
-          contentContainerStyle={styles.container}
-          initialNumToRender={20}
-          getItemLayout={(_, index) => ({ length: 48, offset: 48 * index, index })}
-        />
+        <InvalidatePreferredCtxProvider>
+          <FlatList
+            onScroll={onScroll}
+            ref={listRef}
+            data={data}
+            refreshing={isFetching}
+            onRefresh={onRefresh}
+            keyExtractor={(item) => item.code}
+            renderItem={({ item }) => <CurrencyItem {...item} />}
+            contentContainerStyle={styles.container}
+            initialNumToRender={20}
+            getItemLayout={(_, index) => ({ length: 48, offset: 48 * index, index })}
+          />
+        </InvalidatePreferredCtxProvider>
       </KeyboardAvoidingLayout>
       <View>
         <ListFooter>

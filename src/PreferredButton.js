@@ -1,21 +1,14 @@
 import React, { useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
-import { useQueryClient } from '@tanstack/react-query';
 import { addCurrencyToPreferred, removeCurrencyFromPreferred } from "./api/preferredCurrencies";
 import { configureNextEaseAnim } from "./api/animation";
-import { useDebounceFn } from "./api/useDebouceFn";
+import { useInvalidPreferred } from "./InvalidatePreferredCtx";
 
 const PreferredButton = ({ code, preferred: preferredProp, style }) => {
   const [preferred, setPreferred] = useState(preferredProp);
 
-  const debounceRefresh = useDebounceFn(
-    () => queryClient.invalidateQueries({
-      queryKey: ["preferred-currencies"]
-    })
-  );
-
-  const queryClient = useQueryClient();
+  const { invalidate } = useInvalidPreferred();
 
   const onPress = async () => {
     // update state to update icon's style immediately, list position keeps the same
@@ -24,7 +17,7 @@ const PreferredButton = ({ code, preferred: preferredProp, style }) => {
     await (
       !preferred ? addCurrencyToPreferred(code) : removeCurrencyFromPreferred(code)
     );
-    debounceRefresh();
+    invalidate();
   }
 
   const iconName = preferred ? "star" : "staro";
