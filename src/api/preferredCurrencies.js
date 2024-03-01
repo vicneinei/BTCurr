@@ -23,7 +23,15 @@ export const removeCurrencyFromPreferred = async (currency) => {
 const setPreferredCurrencies = async (currencies) =>
   AsyncStorage.setItem(CURRENCIES_KEY, JSON.stringify(currencies));
 
+/**
+ * @returns {Promise<string[]>}
+ */
 export const getPreferredCurrencies = async () => {
   const jsonValue = await AsyncStorage.getItem(CURRENCIES_KEY);
   return jsonValue != null ? JSON.parse(jsonValue) : [];
 }
+
+export const preferredCurrenciesQueryOpt = {
+  queryKey: ["preferred-currencies"],
+  queryFn: getPreferredCurrencies,
+};

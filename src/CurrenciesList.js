@@ -1,27 +1,41 @@
-import { FlatList } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
+import { configureNextEaseAnim } from "./api/animation";
+import useCurrenciesQuery from "./api/useCurrenciesQuery";
 import CurrencyItem from "./CurrencyItem";
-import { useBTCPriceQuery } from "./btcPrice.api";
+import KeyboardAvoidingLayout from "./KeyboardAvoidingLayout";
+import ListFooter from "./ListFooter";
 
 const CurrenciesList = () => {
-  const { data, isPending, refetch } = useBTCPriceQuery();
+  const { data, isFetching, refetch } = useCurrenciesQuery();
+
+  const onRefresh = async () => {
+    await refetch();
+    configureNextEaseAnim();
+  }
 
   return (
-    <FlatList
-      className="flex-1 w-full mt-10"
-      data={data}
-      refreshing={isPending}
-      // update prices and preferred's positions when user pulls down
-      onRefresh={refetch}
-      keyExtractor={(item) => item.code}
-      renderItem={({ item }) => (
-        <CurrencyItem
-          code={item.code}
-          price={item.rate_for_amount}
-          preferred={item.preferred}
+    <>
+      <KeyboardAvoidingLayout>
+        <FlatList
+          data={data}
+          refreshing={isFetching}
+          // update btc-price when user pulls down
+          onRefresh={onRefresh}
+          keyExtractor={(item) => item.code}
+          renderItem={({ item }) => <CurrencyItem {...item} />}
+          contentContainerStyle={styles.container}
         />
-      )}
-    />
+      </KeyboardAvoidingLayout>
+      <ListFooter />
+    </>
   )
 };
 
 export default CurrenciesList;
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "rgb(229 231 235)",
+    flexGrow: 1
+  },
+});
