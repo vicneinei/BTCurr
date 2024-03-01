@@ -13,5 +13,9 @@ EXPO_PUBLIC_GETGEO_KEY=YOUR_API_KEY
  * Android: Run `npx expo run:android --variant release`
 
 ## Demo
+##### Android
+![android](https://github.com/vicneinei/BTCurr/assets/62955974/a61e4962-04de-4d1a-870f-783a7042ad35)
+
+
 ##### iOS
-![iOS demo gif](./demo/ios.gif)
+![ios](https://github.com/vicneinei/BTCurr/assets/62955974/da727151-2238-409a-993e-05daa6bc74f0)
