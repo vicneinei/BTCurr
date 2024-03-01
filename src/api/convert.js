@@ -7,8 +7,8 @@ export const convertCurrenciesFromAmount = async (amount, fromCurrency) => {
 
   let rate = crypto?.rate_float;
   if (!rate) {
-    const data = queryClient.getQueryData(["btc-price"]);
-    rate = data[fromCurrency]?.rate_float;
+    const data = queryClient.getQueryData(["btc-rates"]);
+    rate = data?.bpi[fromCurrency]?.rate_float;
   }
 
   if (typeof rate !== "number")

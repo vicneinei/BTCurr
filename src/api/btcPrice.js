@@ -1,57 +1,32 @@
-
 /**
- * @returns {Promise<{[key: string]: {rate_for_amount: string, rate_float: number, rate: string}}>}
+ * @returns {Promise<{[key: string]: {rate_for_amount: string, rate_float: number}}>}
  */
-const getBTCPrice = async () => {
-  try {
-    const curr = await getBTCCurrenciesPrice();
-    return curr;
+const getBTCRates = async () => {
+  const { rate, time } = await getBTCUSDRate();
 
-    // return Object.entries(curr).map(([code, value]) => {
-    //   const rate = value.rate_float.toString();
-    //   return {
-    //     code,
-    //     rate_for_amount: rate,
-    //     rate_float: value.rate_float,
-    //     rate,
-    //   };
-    // });
-  } catch (e) {
-    console.log(e);
+  const response = await fetch(
+    process.env.EXPO_PUBLIC_GETGEO_BASE_URL
+    + `&amount=${rate}&api_key=${process.env.EXPO_PUBLIC_GETGEO_KEY}`
+  );
+
+  if (response.ok) {
+    const data = await response.json();
+    for (const key in data.rates)
+      data.rates[key].rate_float = parseFloat(data.rates[key].rate_for_amount);
+    return { bpi: data.rates, time };
   }
+  throw new Error('Network response was not ok.');
 };
 
-const getBTCUSDPrice = async () => {
-  const response = await fetch("https://api.coindesk.com/v1/bpi/currentprice.json");
+const getBTCUSDRate = async () => {
+  const response = await fetch(process.env.EXPO_PUBLIC_COINDESK_URL);
   const data = await response.json();
-  const bpi = {};
 
-  for (const [key, value] of Object.entries(data.bpi)) {
-    const rate = value.rate_float.toString();
-    bpi[key] = {
-      rate_for_amount: rate,
-      rate_float: value.rate_float,
-      rate
-    };
-  }
-
-  return { bpi, time: data.time.updatedISO };
-};
-
-const getBTCCurrenciesPrice = async () => {
-  return getBTCUSDPrice();
-
-  // const response = await fetch(`https://api.getgeoapi.com/v2/currency/convert?api_key=coincoin&from=USD&amount=${amount}&format=json`);
-
-  // if (response.ok) {
-  //   return (await data.json()).rates;
-  // }
-  // console.log('error:', response.status);
-  // return {};
+  return { rate: data.bpi.USD.rate_float, time: data.time.updatedISO };
 };
 
 
 export const btcPriceQueryOpt = {
-  queryKey: ['btc-price'],
-  queryFn: getBTCPrice,
+  queryKey: ['btc-rates'],
+  queryFn: getBTCRates,
 };

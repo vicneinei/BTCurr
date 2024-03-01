@@ -52,16 +52,7 @@ const useCurrenciesQuery = () => {
         }, []
       ) ?? [],
       localNotPreferred,
-      Object.entries(notPreferredCurrencies).map(([code, value]) => {
-        const rate = value.rate_float.toString();
-        return {
-          code,
-          rate_for_amount: rate,
-          rate_float: value.rate_float,
-          rate,
-        };
-      }
-      )
+      Object.entries(notPreferredCurrencies).map(([code, value]) => ({ code, ...value }))
     );
   }, [currenciesPrices?.time, preferredCurr]);
 

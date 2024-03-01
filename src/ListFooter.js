@@ -20,20 +20,20 @@ const TimeFromNow = ({ time }) => {
     return () => clearInterval(interval);
   }, []);
 
-  return <Text className="pl-2 text-lg ">Prices updated {dayjsTime.fromNow()}</Text>;
+  return <Text allowFontScaling={false} className="pl-2 text-lg ">Last checked: <Text className="font-semibold">{dayjsTime.fromNow()}</Text></Text>;
 };
 
-const ListFooter = () => {
+const ListFooter = ({ children }) => {
   const { data, refetch, isFetching } = useQuery(btcPriceQueryOpt);
   return (
-    <View className="w-full flex-row items-center bg-white py-1">
+    <View className="w-full flex-row items-center bg-white h-9">
       <View className="flex-auto w-80">
         {data?.time && <TimeFromNow time={data.time} />}
       </View>
       <TouchableOpacity onPress={refetch} className="flex-auto w-16 items-center">
         {isFetching ? <ActivityIndicator size="small" color="black" />
           : <AntDesign name="reload1" size={24} color="black" />}
-
+        {children}
       </TouchableOpacity>
     </View>
   );

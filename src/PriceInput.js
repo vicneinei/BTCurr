@@ -9,7 +9,7 @@ const PriceInput = ({ code, price, style }) => {
       convertCurrenciesFromAmount(amount, code);
   }
 
-  const debounceConvertCurrencies = useDebounceFn(convertCurrenciesFromText);
+  const debounceConvertCurrencies = useDebounceFn(convertCurrenciesFromText, 400);
 
   const onChange = (text) => text ? debounceConvertCurrencies(text) : null;
 
