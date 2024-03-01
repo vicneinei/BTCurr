@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import { FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { configureNextEaseAnim } from "./api/animation";
 import useCurrenciesQuery from "./api/useCurrenciesQuery";
@@ -48,17 +48,16 @@ const CurrenciesList = () => {
             contentContainerStyle={styles.container}
             initialNumToRender={20}
             getItemLayout={(_, index) => ({ length: 48, offset: 48 * index, index })}
+            removeClippedSubviews={false}
           />
         </InvalidatePreferredCtxProvider>
       </KeyboardAvoidingLayout>
-      <View>
-        <ListFooter>
-          {showTopButton && (
-            <TouchableOpacity className="absolute -top-10" onPress={scrollToTop}>
-              <AntDesign name="upcircleo" size={28} color="black" />
-            </TouchableOpacity>)}
-        </ListFooter>
-      </View>
+      <ListFooter>
+        {showTopButton && (
+          <TouchableOpacity className="absolute -top-10" onPress={scrollToTop}>
+            <AntDesign name="upcircleo" size={28} color="black" />
+          </TouchableOpacity>)}
+      </ListFooter>
     </>
   )
 };
