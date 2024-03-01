@@ -26,7 +26,7 @@ const CurrencyItem = memo(
         <Text className="flex-auto w-16 text-center font-semibold">{code}</Text>
         <View className="flex-auto w-64 bg-white rounded-lg justify-center">
           <PriceInput
-            className="flex-1 p-2 text-center"
+            className="flex-1 p-2"
             price={typeof ratio === 'number' ? (Math.round((rate_float * ratio) * precision) / precision).toString() : ''}
             code={code}
           />
