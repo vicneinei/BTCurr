@@ -1,5 +1,5 @@
 /**
- * @returns {Promise<{[key: string]: {rate_for_amount: string, rate_float: number}}>}
+ * @returns {Promise<{ bpi: { [key: string]: {rate_for_amount: string, rate_float: number} }, time: string  }>}
  */
 const getBTCRates = async () => {
   const { rate, time } = await getBTCUSDRate();
